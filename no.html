@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Valentine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Yeseva+One&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --rose-1: #f7a2b8;
+        --rose-2: #f8c6d4;
+        --text: #5b1b2d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: radial-gradient(
+          circle at top,
+          #ffd1df 0%,
+          var(--rose-2) 40%,
+          var(--rose-1) 100%
+        );
+        font-family: "Nunito", sans-serif;
+        color: var(--text);
+      }
+
+      .wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        text-align: center;
+        padding: 24px;
+      }
+
+      h1 {
+        font-family: "Yeseva One", serif;
+        font-size: clamp(28px, 5vw, 52px);
+        margin: 0;
+        text-shadow: 0 8px 24px rgba(91, 27, 45, 0.2);
+      }
+
+      p {
+        font-size: clamp(18px, 3.6vw, 24px);
+        margin: 0;
+      }
+
+      .photo {
+        width: min(70vw, 360px);
+        border-radius: 24px;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+        border: 6px solid rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.35);
+        padding: 10px;
+      }
+
+      .photo img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 16px;
+      }
+
+      #follow-yes {
+        position: absolute;
+        left: 50%;
+        top: 80%;
+        transform: translate(-50%, -50%);
+        border: none;
+        padding: 18px 40px;
+        font-size: 20px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-family: "Nunito", sans-serif;
+        font-weight: 700;
+        color: #ffffff;
+        background: linear-gradient(135deg, #37d980, #1fae60);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      #follow-yes:hover {
+        transform: translate(-50%, -50%) scale(1.03);
+        box-shadow: 0 18px 34px rgba(0, 0, 0, 0.22);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Don't play with me</h1>
+      <div class="photo">
+        <img src="assets/catgun.png" alt="Cat with a gun" />
+      </div>
+      <p>click yes</p>
+    </div>
+
+    <button id="follow-yes" type="button">Yes</button>
+
+    <script>
+      const followYes = document.getElementById("follow-yes");
+      const target = { x: window.innerWidth / 2, y: window.innerHeight * 0.8 };
+      let current = { ...target };
+
+      function clampTarget(event) {
+        const rect = followYes.getBoundingClientRect();
+        const padding = 8;
+        const offset = 8;
+        const x = Math.min(
+          Math.max(event.clientX, padding + rect.width / 2),
+          window.innerWidth - rect.width / 2 - padding
+        );
+        const y = Math.min(
+          Math.max(event.clientY + offset, padding + rect.height / 2),
+          window.innerHeight - rect.height / 2 - padding
+        );
+
+        target.x = x;
+        target.y = y;
+      }
+
+      document.addEventListener("mousemove", clampTarget);
+      document.addEventListener(
+        "touchmove",
+        (event) => {
+          if (event.touches.length > 0) {
+            clampTarget(event.touches[0]);
+          }
+        },
+        { passive: true }
+      );
+
+      function animateFollow() {
+        const ease = 0.18;
+        current.x += (target.x - current.x) * ease;
+        current.y += (target.y - current.y) * ease;
+
+        followYes.style.left = `${current.x}px`;
+        followYes.style.top = `${current.y}px`;
+        followYes.style.transform = "translate(-50%, -50%)";
+
+        requestAnimationFrame(animateFollow);
+      }
+
+      animateFollow();
+
+      document.addEventListener("click", () => {
+        window.location.href = "yes.html";
+      });
+
+      followYes.addEventListener("click", () => {
+        window.location.href = "yes.html";
+      });
+    </script>
+  </body>
+</html>

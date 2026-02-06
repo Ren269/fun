@@ -1,0 +1,261 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Valentine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Yeseva+One&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --rose-1: #f7a2b8;
+        --rose-2: #f8c6d4;
+        --rose-3: #f06a91;
+        --green: #2fbf71;
+        --red: #e74c3c;
+        --text: #5b1b2d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: radial-gradient(
+          circle at top,
+          #ffd1df 0%,
+          var(--rose-2) 40%,
+          var(--rose-1) 100%
+        );
+        font-family: "Nunito", sans-serif;
+        color: var(--text);
+      }
+
+      .wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 28px;
+        text-align: center;
+        padding: 24px;
+      }
+
+      h1 {
+        font-family: "Yeseva One", serif;
+        font-size: clamp(32px, 6vw, 64px);
+        margin: 0;
+        letter-spacing: 0.5px;
+        text-shadow: 0 8px 24px rgba(91, 27, 45, 0.2);
+        animation: floatIn 0.9s ease-out;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      button {
+        border: none;
+        padding: 14px 28px;
+        font-size: 18px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-family: "Nunito", sans-serif;
+        font-weight: 700;
+        color: #ffffff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 16px 28px rgba(0, 0, 0, 0.2);
+      }
+
+      #yes-btn {
+        background: linear-gradient(135deg, #37d980, #1fae60);
+      }
+
+      #no-btn {
+        background: linear-gradient(135deg, #ff6b6b, #e43f5a);
+        position: relative;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, left 0.28s ease, top 0.28s ease;
+        will-change: left, top;
+      }
+
+      .hearts {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .hearts span {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: rgba(255, 255, 255, 0.35);
+        transform: rotate(45deg);
+        border-radius: 4px;
+        animation: drift 10s infinite ease-in-out;
+      }
+
+      .hearts span::before,
+      .hearts span::after {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 50%;
+        top: -9px;
+        left: 0;
+      }
+
+      .hearts span::after {
+        left: -9px;
+        top: 0;
+      }
+
+      .hearts span:nth-child(1) {
+        top: 12%;
+        left: 18%;
+        animation-delay: 0s;
+      }
+
+      .hearts span:nth-child(2) {
+        top: 22%;
+        right: 20%;
+        animation-delay: 1s;
+      }
+
+      .hearts span:nth-child(3) {
+        bottom: 18%;
+        left: 15%;
+        animation-delay: 2s;
+      }
+
+      .hearts span:nth-child(4) {
+        bottom: 20%;
+        right: 18%;
+        animation-delay: 3s;
+      }
+
+      .hearts span:nth-child(5) {
+        top: 50%;
+        left: 8%;
+        animation-delay: 4s;
+      }
+
+      .hearts span:nth-child(6) {
+        top: 58%;
+        right: 10%;
+        animation-delay: 5s;
+      }
+
+      @keyframes floatIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes drift {
+        0% {
+          transform: translateY(0) rotate(45deg);
+        }
+        50% {
+          transform: translateY(-12px) rotate(45deg);
+        }
+        100% {
+          transform: translateY(0) rotate(45deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="hearts" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <h1>Please be my Valentine🥺💐💐</h1>
+
+      <div class="buttons">
+        <button id="yes-btn" type="button">Yes</button>
+        <button id="no-btn" type="button">No</button>
+      </div>
+    </div>
+
+    <script>
+      const noButton = document.getElementById("no-btn");
+      const yesButton = document.getElementById("yes-btn");
+      let noHoverCount = 0;
+      const maxNoHovers = 5;
+
+      function moveNoButton() {
+        const rect = noButton.getBoundingClientRect();
+        const padding = 16;
+        const maxX = window.innerWidth - rect.width - padding;
+        const maxY = window.innerHeight - rect.height - padding;
+        const minX = padding;
+        const minY = padding;
+
+        const x = Math.max(minX, Math.random() * (maxX - minX) + minX);
+        const y = Math.max(minY, Math.random() * (maxY - minY) + minY);
+
+        noButton.style.position = "absolute";
+        noButton.style.left = `${x}px`;
+        noButton.style.top = `${y}px`;
+      }
+
+      function handleNoHover() {
+        noHoverCount += 1;
+        if (noHoverCount >= maxNoHovers) {
+          window.location.href = "no.html";
+          return;
+        }
+        moveNoButton();
+      }
+
+      noButton.addEventListener("mouseenter", handleNoHover);
+      noButton.addEventListener(
+        "touchstart",
+        (event) => {
+          event.preventDefault();
+          handleNoHover();
+        },
+        { passive: false }
+      );
+
+      yesButton.addEventListener("click", () => {
+        window.location.href = "yes.html";
+      });
+    </script>
+  </body>
+</html>
